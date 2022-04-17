@@ -57,3 +57,43 @@ DataExplorer::plot_str(accidents)
 # check missing data only from selected variables
 DataExplorer::plot_intro(accidents)
 accidents[!complete.cases(accidents), ]
+
+# INITIAL DATA TRANSFORMATION
+
+# ACCIDENT SEVERITY
+# check how many records are from each of the categories of the targeted variable "accident severity"
+accidents %>% 
+  group_by(Accident_Severity)%>%
+  summarise(count = n())
+
+# the data set is clearly unbalanced
+# changing severity from 1, 2 and 3 to 1 and 2, in order to have only two classes
+# this way the number of records in each of the classes is more balanced
+accidents$Accident_Severity[accidents$Accident_Severity == 1] <- 1
+accidents$Accident_Severity[accidents$Accident_Severity == 2] <- 1
+accidents$Accident_Severity[accidents$Accident_Severity == 3] <- 0
+
+# check again
+accidents %>% group_by(Accident_Severity)%>%
+  summarize(count = n()) #the classes are still unbalanced
+# changing to factor
+accidents$Accident_Severity <- factor(accidents$Accident_Severity, levels = c(0,1))
+# renaming the variable
+accidents <- accidents %>% dplyr::rename("accidentseverity" = "Accident_Severity")
+
+
+# TIME OF THE DAY
+# create new variable hour from the existing Time variable
+accidents$hour <- as.numeric(gsub("\\:.*$", "", accidents$Time))
+# change the time into morning, afternoon, evening and noon
+accidents <- accidents %>%
+  add_column(timeday = ifelse (accidents$hour >= 6 & accidents$hour <= 12,"Morning",
+                               ifelse (accidents$hour >12 & accidents$hour <=17,"Afternoon",
+                                       ifelse (accidents$hour >18 & accidents$hour <24,"Evening", "Noon"))))
+# change class and add levels
+accidents$timeday <- factor(accidents$timeday, levels = c("Morning", "Afternoon", "Evening", "Noon"))
+# count number of n/a
+sum(is.na(accidents$timeday)) #64 na
+# remove na, which are only 64 values
+accidents <- subset(accidents,!is.na(accidents$timeday))
+
