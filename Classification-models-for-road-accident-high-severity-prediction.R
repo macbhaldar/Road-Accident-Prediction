@@ -61,6 +61,7 @@ accidents[!complete.cases(accidents), ]
 # INITIAL DATA TRANSFORMATION
 
 # ACCIDENT SEVERITY
+
 # check how many records are from each of the categories of the targeted variable "accident severity"
 accidents %>% 
   group_by(Accident_Severity)%>%
@@ -76,15 +77,19 @@ accidents$Accident_Severity[accidents$Accident_Severity == 3] <- 0
 # check again
 accidents %>% group_by(Accident_Severity)%>%
   summarize(count = n()) #the classes are still unbalanced
+
 # changing to factor
 accidents$Accident_Severity <- factor(accidents$Accident_Severity, levels = c(0,1))
+
 # renaming the variable
 accidents <- accidents %>% dplyr::rename("accidentseverity" = "Accident_Severity")
 
 
 # TIME OF THE DAY
+
 # create new variable hour from the existing Time variable
 accidents$hour <- as.numeric(gsub("\\:.*$", "", accidents$Time))
+
 # change the time into morning, afternoon, evening and noon
 accidents <- accidents %>%
   add_column(timeday = ifelse (accidents$hour >= 6 & accidents$hour <= 12,"Morning",
@@ -92,8 +97,42 @@ accidents <- accidents %>%
                                        ifelse (accidents$hour >18 & accidents$hour <24,"Evening", "Noon"))))
 # change class and add levels
 accidents$timeday <- factor(accidents$timeday, levels = c("Morning", "Afternoon", "Evening", "Noon"))
+
 # count number of n/a
 sum(is.na(accidents$timeday)) #64 na
 # remove na, which are only 64 values
 accidents <- subset(accidents,!is.na(accidents$timeday))
+
+
+# MONTH
+
+# transform date as month
+accidents$Date <- as.Date(accidents$Date, "%d/%m/%Y")
+accidents$month <- months(accidents$Date)
+
+# change class and add levels
+accidents$month <- factor(accidents$month, levels = c("January", "February","March","April","May","June","July",
+                                                      "August","September","October","November","December"))
+# check if there are any nas
+sum(is.na(accidents$month))# there is no nas
+
+# FIRST ROAD CLASS
+
+# change 1st road class
+accidents <- accidents %>%
+  add_column(road1class = ifelse (accidents$X1st_Road_Class == 1 | accidents$X1st_Road_Class == 2,"B",
+                                  ifelse (accidents$X1st_Road_Class == 3 |  accidents$X1st_Road_Class == "4","M",
+                                          ifelse (accidents$X1st_Road_Class == 5 ,"S","U"))))
+
+# change to factor and add levels
+accidents$road1class <- factor(accidents$road1class, levels = c("B","M","S","U"))
+#check to see if there are any nas
+sum(is.na(accidents$road1class))
+
+# DAY OF THE WEEK
+
+# change to factor and add levels
+accidents$weekday <- factor(accidents$Day_of_Week, levels = c(1,2,3,4,5,6,7))
+# check to see if there are any nas
+sum(is.na(accidents$weekday))
 
