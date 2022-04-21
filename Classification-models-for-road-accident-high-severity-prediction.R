@@ -136,3 +136,59 @@ accidents$weekday <- factor(accidents$Day_of_Week, levels = c(1,2,3,4,5,6,7))
 # check to see if there are any nas
 sum(is.na(accidents$weekday))
 
+
+# ROAD TYPE
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(roadtype = ifelse (accidents$Road_Type == 1, "roundabout",
+                                ifelse(accidents$Road_Type == 2, "onewaystreet",
+                                       ifelse(accidents$Road_Type == 3,"dualcarriage",
+                                              ifelse(accidents$Road_Type == 6, "singlecarriage",     
+                                                     ifelse (accidents$Road_Type == 9 |  accidents$Road_Type == -1,"unknown","sliproad"))))))
+# change class to factors                               
+accidents$roadtype <- factor(accidents$roadtype)
+# check to see if there are any nas
+sum(is.na(accidents$weekday))
+
+
+# SPEED LIMIT
+#change to factor and add the levels
+accidents$speedlimit <- factor(accidents$Speed_limit, levels = c(20,30,40,50,60,70,-1))
+
+
+
+ #JUNCTION DETAIL
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(junctiondetail = ifelse (accidents$Junction_Detail == 0, "notjunction",
+                                      ifelse(accidents$Junction_Detail == 1 ,"roundabout",
+                                             ifelse(accidents$Junction_Detail == 2,"miniroundabout",
+                                                    ifelse (accidents$Junction_Detail == 3,"torstaggeredjunction",
+                                                            ifelse (accidents$Junction_Detail == 5,"sliproad",
+                                                                    ifelse (accidents$Junction_Detail == 6,"crossroads",
+                                                                            ifelse (accidents$Junction_Detail == 7, "morethan4arms_notroundabout",
+                                                                                    ifelse(accidents$Junction_Detail == 8,"privatedrive",
+                                                                                           ifelse(accidents$Junction_Detail == 9,"otherjunction","unknown"))))))))))
+# changed to factor
+accidents$junctiondetail <- factor(accidents$junctiondetail)
+
+# JUNCTION CONTROL
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(junctioncontrol = ifelse (accidents$Junction_Control == 0, "notjunction",
+                                       ifelse(accidents$Junction_Control == 1 ,"authorisedperson",
+                                              ifelse(accidents$Junction_Control == 2,"autotrafficsignal",
+                                                     ifelse (accidents$Junction_Control == 3,"stopsign",
+                                                             ifelse (accidents$Junction_Control == 4,"giveawayoruncontrolled","unknown"))))))
+#changed to factor
+accidents$junctioncontrol <- factor(accidents$junctioncontrol)
+
+
+# PEDESTRIAN CROSSING HUMAN CONTROL
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(pedestrian = ifelse (accidents$Pedestrian_Crossing.Human_Control == 0, "none50m",
+                                  ifelse(accidents$Pedestrian_Crossing.Human_Control == 1 ,"schoolpatrol",
+                                         ifelse(accidents$Pedestrian_Crossing.Human_Control == 2,"authorisedperson","unknown"))))
+# changed to factor
+accidents$pedestrian <- factor(accidents$pedestrian)
