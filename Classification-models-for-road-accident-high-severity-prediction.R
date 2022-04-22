@@ -152,12 +152,12 @@ sum(is.na(accidents$weekday))
 
 
 # SPEED LIMIT
-#change to factor and add the levels
+# change to factor and add the levels
 accidents$speedlimit <- factor(accidents$Speed_limit, levels = c(20,30,40,50,60,70,-1))
 
 
 
- #JUNCTION DETAIL
+# JUNCTION DETAIL
 # reduce the number of categories and rename them
 accidents <- accidents %>%
   add_column(junctiondetail = ifelse (accidents$Junction_Detail == 0, "notjunction",
@@ -180,7 +180,7 @@ accidents <- accidents %>%
                                               ifelse(accidents$Junction_Control == 2,"autotrafficsignal",
                                                      ifelse (accidents$Junction_Control == 3,"stopsign",
                                                              ifelse (accidents$Junction_Control == 4,"giveawayoruncontrolled","unknown"))))))
-#changed to factor
+# changed to factor
 accidents$junctioncontrol <- factor(accidents$junctioncontrol)
 
 
@@ -192,3 +192,48 @@ accidents <- accidents %>%
                                          ifelse(accidents$Pedestrian_Crossing.Human_Control == 2,"authorisedperson","unknown"))))
 # changed to factor
 accidents$pedestrian <- factor(accidents$pedestrian)
+
+
+# PEDRESTIAN CROSSING PHYSICAL FACILITIES
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(crossing = ifelse (accidents$Pedestrian_Crossing.Physical_Facilities == 0, "notcrossing50m",
+                                ifelse(accidents$Pedestrian_Crossing.Physical_Facilities == 1 ,"zebra",
+                                       ifelse(accidents$Pedestrian_Crossing.Physical_Facilities == 4,"lightcrossing",
+                                              ifelse (accidents$Pedestrian_Crossing.Physical_Facilities == 5,"trafficjunction",
+                                                      ifelse (accidents$Pedestrian_Crossing.Physical_Facilities == 7,"subway",
+                                                              ifelse (accidents$Pedestrian_Crossing.Physical_Facilities == 8,"centralrefuge","unknown")))))))
+# changed to factor
+accidents$crossing <- factor(accidents$crossing)
+
+
+
+# LIGHT CONDITIONS
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(light = ifelse (accidents$Light_Conditions == 1, "day",
+                             ifelse(accidents$Light_Conditions == 4 ,"darklightlit",
+                                    ifelse(accidents$Light_Conditions == 5,"darklightunits",
+                                           ifelse (accidents$Light_Conditions == 6,"darknolight",
+                                                   ifelse (accidents$Light_Conditions == 7,"darklightunknown","unknown"))))))
+# changed to factor
+accidents$light <- factor(accidents$light)
+
+
+
+# WEATHER CONDITIONS
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(weather = ifelse (accidents$Weather_Conditions == 1, "ok",
+                               ifelse (accidents$Weather_Conditions == 2 ,"rain",
+                                       ifelse (accidents$Weather_Conditions == 3 ,"snow",
+                                               ifelse (accidents$Weather_Conditions == 4 ,"wind",
+                                                       ifelse (accidents$Weather_Conditions == 5 ,"rainwind",
+                                                               ifelse (accidents$Weather_Conditions == 6 ,"snowwind",
+                                                                       ifelse (accidents$Weather_Conditions == 7 ,"frostmist",
+                                                                               ifelse (accidents$Weather_Conditions == 8 ,"other","unknown")))))))))
+
+# changed to factor
+accidents$weather <- factor(accidents$weather)
+
+
