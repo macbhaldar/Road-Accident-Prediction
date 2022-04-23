@@ -297,3 +297,224 @@ accidents <- accidents %>%
 accidents$urbanrural <- factor(accidents$urbanrural)
 
 
+# DROP THE OLD VARIABLES
+# drop date, time, hour
+accidents <- accidents[-c(1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)]
+# doblecheck the variables remaining are the needed ones
+dim(accidents)
+str(accidents)
+summary(accidents)
+
+
+
+# EXPLORATORY ANALYSIS
+
+# grouping
+dayweek <- accidents %>%
+  group_by(accidentseverity, weekday)%>%
+  summarize(n = n())
+# creating plot
+dayweekplot <- ggplot(dayweek, aes(x=weekday, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Day of the Week", x = "Day of the Week", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+
+# grouping
+time <- accidents %>%
+  group_by(accidentseverity, timeday)%>%
+  summarize(n = n())
+# creating plot
+timeplot <- ggplot(time, aes(x=timeday, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Time of the Day", x = "Time of the Day", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+
+# grouping
+roadclass <- accidents %>%
+  group_by(accidentseverity, road1class)%>%
+  summarize(n = n())
+# creating plot
+roadclassplot <- ggplot(roadclass, aes(x=road1class, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Class of the Road 1", x = "Road 1 Class", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+month <- accidents %>%
+  group_by(accidentseverity, month)%>%
+  summarize(n = n())
+# creating plot
+monthplot <- ggplot(month, aes(x=month, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Month", x = "Month", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+roadtype <- accidents %>%
+  group_by(accidentseverity, roadtype)%>%
+  summarize(n = n())
+# creating plot
+roadtypeplot <- ggplot(roadtype, aes(x=roadtype, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Road Type", x = "Road Type", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+speedlimit <- accidents %>%
+  group_by(accidentseverity, speedlimit)%>%
+  summarize(n = n())
+# creating plot
+speedlimitplot <- ggplot(speedlimit, aes(x=speedlimit, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Speed Limit (MpH)", x = "Speed Limit (MpH)", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+junctiondetail <- accidents %>%
+  group_by(accidentseverity, junctiondetail)%>%
+  summarize(n = n())
+#creating plot
+junctiondetailplot <- ggplot(junctiondetail, aes(x=junctiondetail, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Junction Detail", x = "Junction Detail", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+
+#grouping
+junctioncontrol <- accidents %>%
+  group_by(accidentseverity, junctioncontrol)%>%
+  summarize(n = n())
+# creating plot
+junctioncontrolplot <- ggplot(junctioncontrol, aes(x=junctioncontrol, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Junction Control", x = "Junction Control", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+pedestrian <- accidents %>%
+  group_by(accidentseverity, pedestrian)%>%
+  summarize(n = n())
+# creating plot
+pedestrianplot <- ggplot(pedestrian, aes(x=pedestrian, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Pedestrian Crossing Human Control", x = "Pedestrian Crossing Human Control", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+crossing <- accidents %>%
+  group_by(accidentseverity, crossing)%>%
+  summarize(n = n())
+# creating plot
+crossingplot <- ggplot(crossing, aes(x=crossing, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Pedestrian Crossing Physical Facilities", x = "Pedestrian Crossing Physical Facilities", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+light <- accidents %>%
+  group_by(accidentseverity, light)%>%
+  summarize(n = n())
+# creating plot
+lightplot <- ggplot(light, aes(x=light, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Light Conditions", x = "Light Conditions", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+weather <- accidents %>%
+  group_by(accidentseverity, weather)%>%
+  summarize(n = n())
+# creating plot
+weatherplot <- ggplot(weather, aes(x=weather, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Weather Conditions", x = "Weather Conditions", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+road <- accidents %>%
+  group_by(accidentseverity, road)%>%
+  summarize(n = n())
+# creating plot
+roadplot <- ggplot(road, aes(x=road, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Road Surface Conditions", x = "Road Surface Conditions", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+special <- accidents %>%
+  group_by(accidentseverity, special)%>%
+  summarize(n = n())
+# creating plot
+specialplot <- ggplot(special, aes(x=special, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Special Conditions at Site", x = "Special Conditions at Site", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+urbanrural <- accidents %>%
+  group_by(accidentseverity, urbanrural)%>%
+  summarize(n = n())
+# creating plot
+urbanruralplot <- ggplot(urbanrural, aes(x=urbanrural, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Urban - Rural", x = "Urban - Rural", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+# grouping
+carriagehazards <- accidents %>%
+  group_by(accidentseverity, carriagehazards)%>%
+  summarize(n = n())
+# creating plot
+carriagehazardsplot <- ggplot(carriagehazards, aes(x=carriagehazards, y = n, fill = accidentseverity)) + 
+  labs(title = "Accident Severity by Carriageway Hazards", x = "Carriageway Hazards", y = "Count")+
+  geom_bar(position="stack", stat="identity", alpha = 0.6) +
+  scale_fill_manual("legend", values = c("1" = "#990000", "0" = "#e98417"))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.x = element_text(size=6, angle=45))
+
+
+
+# plotting all the previous plotts
+plot_grid(dayweekplot, timeplot, roadclassplot,
+          monthplot,nrow = 2)
+
+plot_grid(roadtypeplot,speedlimitplot,junctiondetailplot,
+          junctioncontrolplot,nrow = 2)
+
+plot_grid(pedestrianplot,crossingplot, roadplot,
+          specialplot,nrow = 2)
+
+plot_grid(urbanruralplot, nrow = 2, ncol =2)
+
