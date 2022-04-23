@@ -237,3 +237,63 @@ accidents <- accidents %>%
 accidents$weather <- factor(accidents$weather)
 
 
+# ROADSURFACE CONDITIONS
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(road = ifelse (accidents$Road_Surface_Conditions == 1, "dry",
+                            ifelse (accidents$Road_Surface_Conditions == 2 ,"wet",
+                                    ifelse (accidents$Road_Surface_Conditions == 3 ,"snow",
+                                            ifelse (accidents$Road_Surface_Conditions == 4 ,"ice",
+                                                    ifelse (accidents$Road_Surface_Conditions == 5 ,"flood",
+                                                            ifelse (accidents$Road_Surface_Conditions == 6 ,"oil",
+                                                                    ifelse (accidents$Road_Surface_Conditions == 7 ,"muld","unknown"))))))))
+
+# changed to factor
+accidents$road <- factor(accidents$road)
+
+
+
+# SPECIAL CONDITIONS AT SITE
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(special = ifelse (accidents$Special_Conditions_at_Site == 0, "none",
+                               ifelse (accidents$Special_Conditions_at_Site == 1,"signalout",
+                                       ifelse (accidents$Special_Conditions_at_Site == 2 | accidents$Special_Conditions_at_Site == 3,"defectivesignal",
+                                               ifelse (accidents$Special_Conditions_at_Site == 4 ,"roadworks",
+                                                       ifelse (accidents$Special_Conditions_at_Site == 5 ,"defectiveroad",
+                                                               ifelse (accidents$Special_Conditions_at_Site == 6 ,"oil",
+                                                                       ifelse (accidents$Special_Conditions_at_Site == 7 ,"muld","unknown"))))))))
+
+# changed to factor
+accidents$special <- factor(accidents$special)
+
+
+
+
+# CARRIAGE HAZARDS
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(carriagehazards = ifelse (accidents$Carriageway_Hazards == 0, "none",
+                                       ifelse (accidents$Carriageway_Hazards == 1,"vehicleloan",
+                                               ifelse (accidents$Carriageway_Hazards == 2 ,"object",
+                                                       ifelse (accidents$Carriageway_Hazards == 3 ,"previousaccident",
+                                                               ifelse (accidents$Carriageway_Hazards == 4 ,"dog",
+                                                                       ifelse (accidents$Carriageway_Hazards == 5 | accidents$Carriageway_Hazards == 7 ,"otheranimal",
+                                                                               ifelse (accidents$Carriageway_Hazards == 6 ,"pedestrian","unknown"))))))))
+
+# changed to factor
+accidents$carriagehazards <- factor(accidents$carriagehazards)
+
+
+
+
+# URBAN OR RUAL AREA
+# reduce the number of categories and rename them
+accidents <- accidents %>%
+  add_column(urbanrural = ifelse (accidents$Urban_or_Rural_Area == 1, "urban",
+                                  ifelse (accidents$Urban_or_Rural_Area == 2,"rural","unknown")))
+
+# changed to factor
+accidents$urbanrural <- factor(accidents$urbanrural)
+
+
